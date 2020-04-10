@@ -73,20 +73,6 @@ namespace Test
         }
 
         [Test]
-        public void InsertIdentity()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PeopleTable people = new PeopleTable();
-                people.Id = 1;
-                people.Name = "李四" + Second;
-                people.Sex = Second;
-                int effect = conn.InsertIdentityAsync(people).Result;
-                Assert.Pass(effect.ToString());
-            }
-        }
-
-        [Test]
         public void Update()
         {
             using (var conn = DbHelper.GetConn())
@@ -135,27 +121,6 @@ namespace Test
                 int effect = conn.InsertOrUpdateAsync(people).Result;
                 //int effect = conn.InsertOrUpdateAsync(people, "Name").Result; //only update Name
                 effect += conn.InsertOrUpdateAsync(p2).Result;
-
-                Assert.Pass(effect.ToString());
-            }
-        }
-
-        [Test]
-        public void InsertIdentityOrUpdate()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PeopleTable people = new PeopleTable();
-                people.Id = 1;
-                people.Name = "王五" + Second;
-                people.Sex = Second;
-                int effect = conn.InsertIdentityOrUpdateAsync(people).Result;
-
-                PeopleTable p2 = new PeopleTable();
-                p2.Id = 52;
-                p2.Name = "小罗" + Second;
-                p2.Sex = Second;
-                effect += conn.InsertIdentityOrUpdateAsync(p2).Result;
 
                 Assert.Pass(effect.ToString());
             }

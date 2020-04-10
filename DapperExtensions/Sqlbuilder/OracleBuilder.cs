@@ -51,13 +51,6 @@ namespace DapperExtensions.Oracle
             return (OracleCache.GetTableEntity<T>().InsertReturnIdSql).Replace("```seq```", sequence);
         }
 
-        public string GetInsertIdentitySql<T>()
-        {
-            var table = OracleCache.GetTableEntity<T>();
-            CommonUtil.CheckTableKey(table);
-            return table.InsertIdentitySql;
-        }
-
         public string GetUpdateSql<T>(string updateFields)
         {
             var table = OracleCache.GetTableEntity<T>();

@@ -71,20 +71,6 @@ namespace Test
         }
 
         [Test]
-        public void InsertIdentity()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PeopleTableOracle people = new PeopleTableOracle();
-                people.Id = 1;
-                people.Name = "李四" + Second;
-                people.Sex = Second;
-                int effect = conn.InsertIdentity(people);
-                Assert.Pass(effect.ToString());
-            }
-        }
-
-        [Test]
         public void Update()
         {
             using (var conn = DbHelper.GetConn())
@@ -134,27 +120,6 @@ namespace Test
                 int effect = conn.InsertOrUpdate(people);
                 //int effect = conn.InsertOrUpdate(people, "Name"); //only update Name
                 effect += conn.InsertOrUpdate(p2);
-
-                Assert.Pass(effect.ToString());
-            }
-        }
-
-        [Test]
-        public void InsertIdentityOrUpdate()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PeopleTableOracle people = new PeopleTableOracle();
-                people.Id = 1;
-                people.Name = "王五" + Second;
-                people.Sex = Second;
-                int effect = conn.InsertIdentityOrUpdate(people);
-
-                PeopleTableOracle p2 = new PeopleTableOracle();
-                p2.Id = 52;
-                p2.Name = "小罗" + Second;
-                p2.Sex = Second;
-                effect += conn.InsertIdentityOrUpdate(p2);
 
                 Assert.Pass(effect.ToString());
             }

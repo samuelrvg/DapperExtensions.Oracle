@@ -12,8 +12,6 @@ namespace DapperExtensions.Oracle
 
         string GetInsertReturnIdSql<T>(string sequence = null);
 
-        string GetInsertIdentitySql<T>();
-
         string GetUpdateSql<T>(string updateFields);
 
         string GetUpdateByWhereSql<T>(string where, string updateFields);

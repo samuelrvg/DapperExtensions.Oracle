@@ -42,21 +42,6 @@ namespace DapperExtensions.Oracle
         }
 
         /// <summary>
-        /// sqlserver、mysql、sqlite、postgresql
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="conn"></param>
-        /// <param name="model"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <returns></returns>
-        public static dynamic InsertReturnId<T>(this IDbConnection conn, T model, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            var builder = BuilderFactory.GetBuilder(conn);
-            return conn.ExecuteScalar<dynamic>(builder.GetInsertReturnIdSql<T>(), model, tran, commandTimeout);
-        }
-
-        /// <summary>
         /// only oracle use
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -76,19 +61,6 @@ namespace DapperExtensions.Oracle
             decimal id = GetSequenceCurrent<decimal>(conn, sequence, tran, null);
             model.GetType().GetProperty(tableEntity.KeyName).SetValue(model, id);
             return id;
-        }
-
-
-        /// <summary>
-        /// for sqlserver insert identity
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int InsertIdentity<T>(this IDbConnection conn, T model, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            var builder = BuilderFactory.GetBuilder(conn);
-            return conn.Execute(builder.GetInsertIdentitySql<T>(), model, tran, commandTimeout);
         }
 
         public static int Update<T>(this IDbConnection conn, T model, string updateFields = null, IDbTransaction tran = null, int? commandTimeout = null)
@@ -118,34 +90,6 @@ namespace DapperExtensions.Oracle
             else
             {
                 effectRow += Insert(conn, model, tran, commandTimeout);
-            }
-
-            return effectRow;
-        }
-
-        /// <summary>
-        /// for sqlserver insert identity
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="model"></param>
-        /// <param name="updateFields"></param>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        public static int InsertIdentityOrUpdate<T>(this IDbConnection conn, T model, string updateFields = null, bool update = true, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            var builder = BuilderFactory.GetBuilder(conn);
-            int effectRow = 0;
-            dynamic total = conn.ExecuteScalar<dynamic>(builder.GetExistsKeySql<T>(), model, tran, commandTimeout);
-            if (total > 0)
-            {
-                if (update)
-                {
-                    effectRow += Update(conn, model, updateFields, tran, commandTimeout);
-                }
-            }
-            else
-            {
-                effectRow += InsertIdentity(conn, model, tran, commandTimeout);
             }
 
             return effectRow;

@@ -59,12 +59,6 @@ namespace DapperExtensions.Oracle
 
         }
 
-        public static async Task<int> InsertIdentityAsync<T>(this IDbConnection conn, T model, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            var builder = BuilderFactory.GetBuilder(conn);
-            return await conn.ExecuteAsync(builder.GetInsertIdentitySql<T>(), model, tran, commandTimeout);
-        }
-
         public static async Task<int> UpdateAsync<T>(this IDbConnection conn, T model, string updateFields = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             var builder = BuilderFactory.GetBuilder(conn);
@@ -82,14 +76,6 @@ namespace DapperExtensions.Oracle
             return await Task.Run(() =>
             {
                 return InsertOrUpdate<T>(conn, model, updateFields, update, tran, commandTimeout);
-            });
-        }
-
-        public static async Task<int> InsertIdentityOrUpdateAsync<T>(this IDbConnection conn, T model, string updateFields = null, bool update = true, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            return await Task.Run(() =>
-            {
-                return InsertIdentityOrUpdate<T>(conn, model, updateFields, update, tran, commandTimeout);
             });
         }
 

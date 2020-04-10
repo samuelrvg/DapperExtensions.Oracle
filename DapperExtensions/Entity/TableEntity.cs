@@ -26,7 +26,6 @@ namespace DapperExtensions.Oracle
         public string AllFieldsAtEqExceptKey { get; set; }//[name]=@name,[sex]=@sex
 
         public string InsertSql { get; set; } //添加记录,返回受影响行数
-        public string InsertIdentitySql { get; set; } //添加有自增id表,返回受影响行数
         public string InsertReturnIdSql { get; set; } //添加记录返回自增id
         public string GetByIdSql { get; set; } //根据id获取记录
         public string GetByIdsSql { get; set; } //根据ids获取记录
