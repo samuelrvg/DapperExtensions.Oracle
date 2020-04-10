@@ -1,4 +1,4 @@
-# DapperExtensions
+# DapperExtensions.Oracle
 Dapper <br>
 https://github.com/StackExchange/Dapper <br>
 
