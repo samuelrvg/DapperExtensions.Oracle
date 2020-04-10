@@ -18,14 +18,14 @@ namespace DapperExtensions.Oracle
             {
                 if (!string.IsNullOrEmpty(table.KeyName))
                 {
-                    orderBy = string.Format("ORDER BY \"{0}\"", table.KeyName);
+                    orderBy = string.Format("ORDER BY {0}", table.KeyName);
                 }
                 else
                 {
-                    orderBy = string.Format("ORDER BY \"{0}\"", table.AllFieldList.First());
+                    orderBy = string.Format("ORDER BY {0}", table.AllFieldList.First());
                 }
             }
-            sb.AppendFormat("SELECT * FROM(SELECT A.*,ROWNUM RN FROM (SELECT {0} FROM \"{1}\" {2} {3}) A  WHERE ROWNUM <= {4}) WHERE RN > {5}", returnFields, table.TableName, where, orderBy, skip + take, skip);
+            sb.AppendFormat("SELECT * FROM(SELECT A.*,ROWNUM RN FROM (SELECT {0} FROM {1} {2} {3}) A  WHERE ROWNUM <= {4}) WHERE RN > {5}", returnFields, table.TableName, where, orderBy, skip + take, skip);
         }
 
         #endregion
@@ -34,9 +34,9 @@ namespace DapperExtensions.Oracle
         {
             var table = OracleCache.GetTableEntity<T>();
             if (string.IsNullOrEmpty(returnFields))
-                return string.Format("SELECT {0} FROM \"{1}\" WHERE rownum=0", table.AllFields, table.TableName);
+                return string.Format("SELECT {0} FROM {1} WHERE rownum=0", table.AllFields, table.TableName);
             else
-                return string.Format("SELECT {0} FROM \"{1}\" WHERE rownum=0", returnFields, table.TableName);
+                return string.Format("SELECT {0} FROM {1} WHERE rownum=0", returnFields, table.TableName);
         }
 
         public string GetInsertSql<T>()
@@ -72,7 +72,7 @@ namespace DapperExtensions.Oracle
         {
             var table = OracleCache.GetTableEntity<T>();
             CommonUtil.CheckTableKey(table);
-            return string.Format("SELECT COUNT(1) FROM \"{0}\" WHERE \"{1}\"=:{1}", table.TableName, table.KeyName);
+            return string.Format("SELECT COUNT(1) FROM {0} WHERE {1}=:{1}", table.TableName, table.KeyName);
         }
 
         public string GetDeleteByIdSql<T>()
@@ -117,7 +117,7 @@ namespace DapperExtensions.Oracle
         public string GetTotalSql<T>(string where)
         {
             var table = OracleCache.GetTableEntity<T>();
-            return string.Format("SELECT COUNT(1) FROM \"{0}\" {1}", table.TableName, where);
+            return string.Format("SELECT COUNT(1) FROM {0} {1}", table.TableName, where);
         }
 
         public string GetAllSql<T>(string returnFields, string orderBy)
@@ -126,7 +126,7 @@ namespace DapperExtensions.Oracle
             if (string.IsNullOrEmpty(returnFields))
                 return table.GetAllSql + orderBy;
             else
-                return string.Format("SELECT {0} FROM \"{1}\" {2}", returnFields, table.TableName, orderBy);
+                return string.Format("SELECT {0} FROM {1} {2}", returnFields, table.TableName, orderBy);
         }
 
         public string GetByIdSql<T>(string returnFields)
@@ -136,7 +136,7 @@ namespace DapperExtensions.Oracle
             if (string.IsNullOrEmpty(returnFields))
                 return table.GetByIdSql;
             else
-                return string.Format("SELECT {0} FROM \"{1}\" WHERE \"{2}\"=:id", returnFields, table.TableName, table.KeyName);
+                return string.Format("SELECT {0} FROM {1} WHERE {2}=:id", returnFields, table.TableName, table.KeyName);
         }
 
         public string GetByIdsSql<T>(string returnFields)
@@ -146,7 +146,7 @@ namespace DapperExtensions.Oracle
             if (string.IsNullOrEmpty(returnFields))
                 return table.GetByIdsSql;
             else
-                return string.Format("SELECT {0} FROM \"{1}\" WHERE \"{2}\" IN :ids", returnFields, table.TableName, table.KeyName);
+                return string.Format("SELECT {0} FROM {1} WHERE {2} IN :ids", returnFields, table.TableName, table.KeyName);
         }
 
         public string GetByIdsWithFieldSql<T>(string field, string returnFields)
@@ -154,7 +154,7 @@ namespace DapperExtensions.Oracle
             var table = OracleCache.GetTableEntity<T>();
             if (string.IsNullOrEmpty(returnFields))
                 returnFields = table.AllFields;
-            return string.Format("SELECT {0} FROM \"{1}\" WHERE \"{2}\" IN :ids", returnFields, table.TableName, field);
+            return string.Format("SELECT {0} FROM {1} WHERE {2} IN :ids", returnFields, table.TableName, field);
         }
 
         public string GetByWhereSql<T>(string where, string returnFields, string orderBy)
@@ -162,7 +162,7 @@ namespace DapperExtensions.Oracle
             var table = OracleCache.GetTableEntity<T>();
             if (string.IsNullOrEmpty(returnFields))
                 returnFields = table.AllFields;
-            return string.Format("SELECT {0} FROM \"{1}\" {2} {3}", returnFields, table.TableName, where, orderBy);
+            return string.Format("SELECT {0} FROM {1} {2} {3}", returnFields, table.TableName, where, orderBy);
         }
 
         public string GetByWhereFirstSql<T>(string where, string returnFields)
@@ -171,10 +171,10 @@ namespace DapperExtensions.Oracle
             if (string.IsNullOrEmpty(returnFields))
                 returnFields = table.AllFields;
             if (!string.IsNullOrEmpty(where))
-                where += " AND rownum=1";
+                where += "AND rownum=1";
             else
                 where = "WHERE rownum=1";
-            return string.Format("SELECT {0} FROM \"{1}\" {2}", returnFields, table.TableName, where);
+            return string.Format("SELECT {0} FROM {1} {2}", returnFields, table.TableName, where);
         }
 
         public string GetBySkipTakeSql<T>(int skip, int take, string where, string returnFields, string orderBy)
