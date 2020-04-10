@@ -11,5 +11,6 @@ namespace DapperExtensions.Oracle
         public string TableName { get; set; }
         public string KeyName { get; set; }
         public bool IsIdentity { get; set; }
+        public string SequenceName { get; set; }
     }
 }
