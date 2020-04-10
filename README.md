@@ -29,7 +29,7 @@ public class PeopleTable
 
     public int Sex { get; set; }
 
-    //[Igore]
+    //[Ignore]
     //public dynamic OtherData = new ExpandoObject();
     
 }
