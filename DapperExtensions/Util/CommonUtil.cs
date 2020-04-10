@@ -128,9 +128,14 @@ namespace DapperExtensions.Oracle
                         string Name = item.Name;
                         var column = item.GetCustomAttributes(false).FirstOrDefault(f => f is ColumnAttribute) as ColumnAttribute;
                         if (column != null)
+                        {
                             Name = column.Name;
-
-                        model.AllFieldList.Add(Name);
+                            model.AllFieldList.Add(Name);
+                        }
+                        else
+                        {
+                            model.AllFieldList.Add(Name.ToUpper());
+                        }
 
                         if (Name.ToLower().Equals(model.KeyName.ToLower()))
                             model.KeyType = item.PropertyType;
@@ -174,8 +179,6 @@ namespace DapperExtensions.Oracle
                 {
                     table.InsertSql = string.Format("INSERT INTO {0}({1})VALUES({2})", table.TableName, FieldsExtKey, FieldsAtExtKey);
                 }
-
-                table.InsertIdentitySql = string.Format("INSERT INTO {0}({1})VALUES({2})", table.TableName, Fields, FieldsAt);
 
                 table.DeleteByIdSql = string.Format("DELETE FROM {0} WHERE {1}=:id", table.TableName, table.KeyName);
                 table.DeleteByIdsSql = string.Format("DELETE FROM {0} WHERE {1} IN :ids", table.TableName, table.KeyName);
