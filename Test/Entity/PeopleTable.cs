@@ -1,5 +1,4 @@
-﻿using System;
-using DapperExtensions;
+﻿using DapperExtensions.Oracle;
 //using System.Dynamic;
 
 namespace Test

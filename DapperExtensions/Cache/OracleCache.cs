@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using System;
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     internal class OracleCache
     {

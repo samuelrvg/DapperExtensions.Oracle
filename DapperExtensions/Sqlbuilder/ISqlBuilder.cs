@@ -1,5 +1,5 @@
 ﻿
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     internal interface ISqlBuilder
     {

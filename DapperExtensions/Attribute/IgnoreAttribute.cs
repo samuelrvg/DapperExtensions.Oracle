@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     /// <summary>
     /// 忽略列(非数据库字段)

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using System.Data;
 using NUnit.Framework;
-using DapperExtensions;
+using DapperExtensions.Oracle;
 using Newtonsoft.Json;
 
 namespace Test
@@ -30,88 +27,12 @@ namespace Test
         }
 
         [Test]
-        public void GetDataSet()
-        {
-            string sql = "SELECT * FROM People;SELECT * FROM Student;SELECT * FROM School";
-            using (var conn = DbHelper.GetConn())
-            {
-                DataSet ds = conn.GetDataSetAsync(sql).Result;
-                Assert.Pass(ds.Tables.Count.ToString());
-            }
-        }
-
-        [Test]
         public void GetSchemaTable()
         {
             using (var conn = DbHelper.GetConn())
             {
                 DataTable dt = conn.GetSchemaTableAsync<PeopleTable>().Result;
                 Assert.Pass(dt.Columns[1].ColumnName);
-            }
-        }
-
-        [Test]
-        public void BulkCopy()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                string sql = "SELECT Top 1 * FROM School";
-                DataTable dt = conn.GetDataTableAsync(sql).Result;
-                foreach (DataRow row in dt.Rows)
-                {
-                    row["Name"] = "钱七" + Second;
-                }
-                string msg = conn.BulkCopyAsync(dt, "School", null).Result;
-                Assert.Pass(msg);
-            }
-        }
-
-        [Test]
-        public void BulkCopy_T()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                string sql = "SELECT Top 1 * FROM School";
-                DataTable dt = conn.GetDataTableAsync(sql).Result;
-                foreach (DataRow row in dt.Rows)
-                {
-                    row["Name"] = "钱七" + Second;
-                }
-                string msg = conn.BulkCopyAsync<SchoolTable>(dt).Result;
-                Assert.Pass(msg);
-
-            }
-        }
-
-        [Test]
-        public void BulkUpdate()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                string sql = "SELECT * FROM School";
-                DataTable dt = conn.GetDataTableAsync(sql).Result;
-                foreach (DataRow row in dt.Rows)
-                {
-                    row["Name"] = "钱七" + Second;
-                }
-                string msg = conn.BulkUpdateAsync(dt, "School").Result;
-                Assert.Pass(msg);
-            }
-        }
-
-        [Test]
-        public void BulkUpdate_T()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                string sql = "SELECT * FROM School";
-                DataTable dt = conn.GetDataTableAsync(sql).Result;
-                foreach (DataRow row in dt.Rows)
-                {
-                    row["Name"] = "钱七" + Second;
-                }
-                string msg = conn.BulkUpdateAsync<SchoolTable>(dt).Result;
-                Assert.Pass(msg);
             }
         }
 

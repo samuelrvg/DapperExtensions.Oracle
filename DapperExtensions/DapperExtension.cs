@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Dapper;
 using System.Data;
-using System.Data.SqlClient;
 
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     public static partial class DapperExtension
     {
@@ -29,153 +25,10 @@ namespace DapperExtensions
             }
         }
 
-        public static DataSet GetDataSet(this IDbConnection conn, string sql, object param = null, IDbTransaction tran = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (conn.GetType().Name.Equals("OracleConnection"))
-            {
-                throw new Exception("sorry oracle do no support GetDataSet");
-            }
-            if (conn.State == ConnectionState.Closed)
-                conn.Open();
-            using (IDataReader reader = conn.ExecuteReader(sql, param, tran, commandTimeout, commandType))
-            {
-                DataSet ds = new DataSet();
-                int i = 0;
-                while (!reader.IsClosed)
-                {
-                    i++;
-                    DataTable dt = new DataTable();
-                    dt.TableName = "T" + i;
-                    dt.Load(reader);
-                    ds.Tables.Add(dt);
-                }
-                return ds;
-            }
-        }
-
         public static DataTable GetSchemaTable<T>(this IDbConnection conn, string returnFields = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             var builder = BuilderFactory.GetBuilder(conn);
             return GetDataTable(conn, builder.GetSchemaTableSql<T>(returnFields), null, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// only sqlserver use BulkCopy
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="dt"></param>
-        /// <param name="tableName"></param>
-        /// <param name="copyFields"></param>
-        /// <param name="insert_identity">false</param>
-        /// <param name="tran"></param>
-        /// <param name="batchSize">default 20000</param>
-        /// <param name="timeOut">second default 100s</param>
-        /// <returns></returns>
-        public static string BulkCopy(this IDbConnection conn, DataTable dt, string tableName, string copyFields = null, bool insert_identity = false, int batchSize = 20000, int timeout = 100)
-        {
-            if (!conn.GetType().Name.Equals("SqlConnection"))
-            {
-                throw new Exception("only sqlserver can use BulkCopy");
-            }
-            if (conn.State == ConnectionState.Closed)
-                conn.Open();
-            SqlBulkCopyOptions option = SqlBulkCopyOptions.Default;
-            if (insert_identity)
-            {
-                option = SqlBulkCopyOptions.KeepIdentity;
-            }
-
-            SqlConnection _conn = conn as SqlConnection;
-
-            using (var tran = conn.BeginTransaction())
-            {
-                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_conn, option, tran as SqlTransaction)) //SqlBulkCopyOptions.Default
-                {
-                    try
-                    {
-                        bulkCopy.BatchSize = batchSize;
-                        bulkCopy.BulkCopyTimeout = timeout;
-                        bulkCopy.DestinationTableName = tableName;
-
-                        if (!string.IsNullOrEmpty(copyFields))
-                        {
-                            foreach (var item in copyFields.Split(','))
-                            {
-                                bulkCopy.ColumnMappings.Add(item, item);
-                            }
-                        }
-                        else
-                        {
-                            foreach (DataColumn col in dt.Columns)
-                            {
-                                bulkCopy.ColumnMappings.Add(col.ColumnName, col.ColumnName);
-                            }
-                        }
-                        bulkCopy.WriteToServer(dt);
-                        tran.Commit();
-                        return "1";
-                    }
-                    catch (Exception ex)
-                    {
-                        tran.Rollback();
-                        return ex.Message;
-                    }
-
-                }
-            }
-
-        }
-
-        public static string BulkCopy<T>(this IDbConnection conn, DataTable dt, string copyFields = null, bool insert_identity = false, int batchSize = 20000, int timeout = 100)
-        {
-            var table = SqlServerCache.GetTableEntity<T>();
-            return BulkCopy(conn, dt, table.TableName, copyFields, insert_identity, batchSize, timeout);
-        }
-
-        public static string BulkUpdate(this IDbConnection conn, DataTable dt, string tableName, string column = "*", int batchSize = 20000, int timeout = 100)
-        {
-            if (!conn.GetType().Name.Equals("SqlConnection"))
-            {
-                throw new Exception("only sqlserver can use BulkUpdate");
-            }
-            if (conn.State == ConnectionState.Closed)
-                conn.Open();
-            SqlConnection cnn = conn as SqlConnection;
-            SqlCommand comm = cnn.CreateCommand();
-            comm.CommandTimeout = timeout;
-            comm.CommandType = CommandType.Text;
-            SqlDataAdapter adapter = new SqlDataAdapter(comm);
-            SqlCommandBuilder commandBulider = new SqlCommandBuilder(adapter);
-            commandBulider.ConflictOption = ConflictOption.OverwriteChanges;
-
-            using (var tran = conn.BeginTransaction())
-            {
-                try
-                {
-                    adapter.UpdateBatchSize = batchSize;
-                    adapter.SelectCommand.Transaction = tran as SqlTransaction;
-                    adapter.SelectCommand.CommandText = "SELECT TOP 0 " + column + " FROM " + tableName;
-                    adapter.Update(dt.GetChanges());
-                    adapter.SelectCommand.Transaction.Commit();//提交事务
-                    return "1";
-                }
-                catch (Exception ex)
-                {
-                    tran.Rollback();
-                    return ex.Message;
-                }
-                finally
-                {
-                    comm.Dispose();
-                    adapter.Dispose();
-                }
-            }
-        }
-
-        public static string BulkUpdate<T>(this IDbConnection conn, DataTable dt, string column = "*", int batchSize = 20000, int timeOut = 100)
-        {
-            var table = SqlServerCache.GetTableEntity<T>();
-            return BulkUpdate(conn, dt, table.TableName, column, batchSize, timeOut);
         }
 
         #endregion

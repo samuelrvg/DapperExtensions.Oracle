@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     /// <summary>
     /// Table column map

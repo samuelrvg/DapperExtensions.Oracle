@@ -7,9 +7,9 @@
     <ProjectGuid>{47F63CFD-5637-4A4A-AB72-B325DB6350C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DapperExtensions</RootNamespace>
-    <AssemblyName>DapperExtensions</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>DapperExtensions.Oracle</RootNamespace>
+    <AssemblyName>DapperExtensions.Oracle</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,9 +33,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Dapper.1.60.1\net45\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.35\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,13 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\ColumnAttribute.cs" />
-    <Compile Include="Attribute\IgoreAttribute.cs" />
+    <Compile Include="Attribute\IgnoreAttribute.cs" />
     <Compile Include="Attribute\TableAttribute.cs" />
-    <Compile Include="Cache\MySqlCache.cs" />
     <Compile Include="Cache\OracleCache.cs" />
-    <Compile Include="Cache\PostgreCache.cs" />
-    <Compile Include="Cache\SqliteCache.cs" />
-    <Compile Include="Cache\SqlServerCache.cs" />
     <Compile Include="DapperExtension.cs" />
     <Compile Include="DapperExtensionAsync.cs">
       <SubType>Code</SubType>
@@ -63,14 +58,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sqlbuilder\BuilderFactory.cs" />
     <Compile Include="Sqlbuilder\ISqlBuilder.cs" />
-    <Compile Include="Sqlbuilder\MySqlBuilder.cs" />
     <Compile Include="Sqlbuilder\OracleBuilder.cs" />
-    <Compile Include="Sqlbuilder\PostgreBuilder.cs" />
-    <Compile Include="Sqlbuilder\SqliteBuilder.cs" />
-    <Compile Include="Sqlbuilder\SqlServerBuilder.cs" />
     <Compile Include="Util\CommonUtil.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

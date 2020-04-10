@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Dapper;
 using System.Data;
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     public static partial class DapperExtension
     {
@@ -21,52 +19,11 @@ namespace DapperExtensions
             });
         }
 
-        public static async Task<DataSet> GetDataSetAsync(this IDbConnection conn, string sql, object param = null, IDbTransaction tran = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            return await Task.Run(() =>
-            {
-                return GetDataSet(conn, sql, param, tran, commandTimeout, commandType);
-            });
-        }
-
         public static async Task<DataTable> GetSchemaTableAsync<T>(this IDbConnection conn, string returnFields = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             return await Task.Run(() =>
             {
                 return GetSchemaTable<T>(conn, returnFields, tran, commandTimeout);
-            });
-        }
-
-        public static async Task<string> BulkCopyAsync(this IDbConnection conn, DataTable dt, string tableName, string copyFields = null, bool insert_identity = false, int batchSize = 20000, int timeout = 100)
-        {
-            return await Task.Run(() =>
-            {
-                return BulkCopy(conn, dt, tableName, copyFields, insert_identity, batchSize, timeout);
-            });
-
-        }
-
-        public static async Task<string> BulkCopyAsync<T>(this IDbConnection conn, DataTable dt, string copyFields = null, bool insert_identity = false, int batchSize = 20000, int timeout = 100)
-        {
-            return await Task.Run(() =>
-            {
-                return BulkCopy<T>(conn, dt, copyFields, insert_identity, batchSize, timeout);
-            });
-        }
-
-        public static async Task<string> BulkUpdateAsync(this IDbConnection conn, DataTable dt, string tableName, string column = "*", int batchSize = 20000, int timeout = 100)
-        {
-            return await Task.Run(() =>
-            {
-                return BulkUpdate(conn, dt, tableName, column, batchSize, timeout);
-            });
-        }
-
-        public static async Task<string> BulkUpdateAsync<T>(this IDbConnection conn, DataTable dt, string column = "*", int batchSize = 20000, int timeout = 100)
-        {
-            return await Task.Run(() =>
-            {
-                return BulkUpdate<T>(conn, dt, column, batchSize, timeout);
             });
         }
 

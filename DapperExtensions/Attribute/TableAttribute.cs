@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     /// <summary>
     /// TableName：表名称，KeyName：主键名称，IsIdentity：是否自增

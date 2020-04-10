@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     internal class TableEntity
     {

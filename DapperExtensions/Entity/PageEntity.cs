@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DapperExtensions
+namespace DapperExtensions.Oracle
 {
     public class PageEntity<T>
     {
