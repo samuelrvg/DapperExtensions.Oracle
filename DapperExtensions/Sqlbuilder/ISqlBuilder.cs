@@ -57,8 +57,6 @@ namespace DapperExtensions.Oracle
 
         string GetByPageIndexSql<T>(int pageIndex, int pageSize, string where, string returnFields, string orderBy);
 
-        string GetPageSql<T>(int pageIndex, int pageSize, string where, string returnFields, string orderBy);
-
         #endregion
 
 

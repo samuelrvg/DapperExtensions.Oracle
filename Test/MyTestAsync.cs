@@ -440,33 +440,5 @@ namespace Test
                 Assert.Pass(json);
             }
         }
-
-        [Test]
-        public void GetPage()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PageEntity<PeopleTable> data = conn.GetPageAsync<PeopleTable>(5, 2).Result;
-                //PageEntity<PeopleTable> data = conn.GetPage<PeopleTable>(1, 10, "WHERE Id<@Id", new { Id = 5 }); //where
-                //PageEntity<PeopleTable> data = conn.GetPage<PeopleTable>(1, 2, returnFields: "Name"); //only return field [name]
-                //PageEntity<PeopleTable> data = conn.GetPage<PeopleTable>(1, 10, orderBy: "ORDER BY Id DESC"); //order by
-                string json = JsonConvert.SerializeObject(data);
-                Assert.Pass(json);
-            }
-        }
-
-        [Test]
-        public void GetPageDynamic()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PageEntity<dynamic> data = conn.GetPageDynamicAsync<PeopleTable>(1, 2).Result;
-                //PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 10, "WHERE Id<@Id", new { Id = 5 }); //where
-                //PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 2, returnFields: "Name"); //only return field [name]
-                //PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 10, orderBy: "ORDER BY Id DESC"); //order by
-                string json = JsonConvert.SerializeObject(data);
-                Assert.Pass(json);
-            }
-        }
     }
 }

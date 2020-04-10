@@ -201,10 +201,5 @@ namespace DapperExtensions.Oracle
             }
             return GetBySkipTakeSql<T>(skip, pageSize, where, returnFields, orderBy);
         }
-
-        public string GetPageSql<T>(int pageIndex, int pageSize, string where, string returnFields, string orderBy)
-        {
-            throw new Exception("for oracle please use [GetPageForOracle]");
-        }
     }
 }

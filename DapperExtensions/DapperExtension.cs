@@ -66,11 +66,16 @@ namespace DapperExtensions.Oracle
         /// <param name="tran"></param>
         /// <param name="commandTimeout"></param>
         /// <returns></returns>
-        public static decimal InsertReturnIdForOracle<T>(this IDbConnection conn, T model, string sequence, IDbTransaction tran = null, int? commandTimeout = null)
+        public static decimal InsertReturnIdForOracle<T>(this IDbConnection conn, T model, string sequence = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             var builder = BuilderFactory.GetBuilder(conn);
+            TableAttribute tableEntity = model.GetType().GetCustomAttributes(false).FirstOrDefault(f => f is TableAttribute) as TableAttribute;
+            if (string.IsNullOrEmpty(sequence))
+                sequence = tableEntity.SequenceName;
             conn.Execute(builder.GetInsertReturnIdSql<T>(sequence), model, tran, commandTimeout);
-            return GetSequenceCurrent<decimal>(conn, sequence, tran, null);
+            decimal id = GetSequenceCurrent<decimal>(conn, sequence, tran, null);
+            model.GetType().GetProperty(tableEntity.KeyName).SetValue(model, id);
+            return id;
         }
 
 
@@ -313,36 +318,6 @@ namespace DapperExtensions.Oracle
         {
             var builder = BuilderFactory.GetBuilder(conn);
             return conn.Query(builder.GetByPageIndexSql<T>(pageIndex, pageSize, where, returnFields, orderBy), param, tran, true, commandTimeout);
-        }
-
-        public static PageEntity<T> GetPage<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            var builder = BuilderFactory.GetBuilder(conn);
-            PageEntity<T> pageEntity = new PageEntity<T>();
-            using (var reader = conn.QueryMultiple(builder.GetPageSql<T>(pageIndex, pageSize, where, returnFields, orderBy), param, tran, commandTimeout))
-            {
-                pageEntity.Total = reader.ReadFirstOrDefault<long>();
-                if (pageEntity.Total > 0)
-                    pageEntity.Data = reader.Read<T>();
-                else
-                    pageEntity.Data = Enumerable.Empty<T>();
-            }
-            return pageEntity;
-        }
-
-        public static PageEntity<dynamic> GetPageDynamic<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            var builder = BuilderFactory.GetBuilder(conn);
-            PageEntity<dynamic> pageEntity = new PageEntity<dynamic>();
-            using (var reader = conn.QueryMultiple(builder.GetPageSql<T>(pageIndex, pageSize, where, returnFields, orderBy), param, tran, commandTimeout))
-            {
-                pageEntity.Total = reader.ReadFirstOrDefault<long>();
-                if (pageEntity.Total > 0)
-                    pageEntity.Data = reader.Read<dynamic>();
-                else
-                    pageEntity.Data = Enumerable.Empty<dynamic>();
-            }
-            return pageEntity;
         }
 
         public static PageEntity<T> GetPageForOracle<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)

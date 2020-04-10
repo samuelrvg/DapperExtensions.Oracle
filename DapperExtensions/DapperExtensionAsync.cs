@@ -43,13 +43,18 @@ namespace DapperExtensions.Oracle
             return await conn.ExecuteScalarAsync<dynamic>(builder.GetInsertReturnIdSql<T>(), model, tran, commandTimeout);
         }
 
-        public async static Task<decimal> InsertReturnIdForOracleAsync<T>(this IDbConnection conn, T model, string sequence, IDbTransaction tran = null, int? commandTimeout = null)
+        public async static Task<decimal> InsertReturnIdForOracleAsync<T>(this IDbConnection conn, T model, string sequence = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             return await Task.Run(() =>
             {
                 var builder = BuilderFactory.GetBuilder(conn);
+                TableAttribute tableEntity = model.GetType().GetCustomAttributes(false).FirstOrDefault(f => f is TableAttribute) as TableAttribute;
+                if (string.IsNullOrEmpty(sequence))
+                    sequence = tableEntity.SequenceName;
                 conn.Execute(builder.GetInsertReturnIdSql<T>(sequence), model, tran, commandTimeout);
-                return GetSequenceCurrent<decimal>(conn, sequence, tran, null);
+                decimal id = GetSequenceCurrent<decimal>(conn, sequence, tran, null);
+                model.GetType().GetProperty(tableEntity.KeyName).SetValue(model, id);
+                return id;
             });
 
         }
@@ -256,22 +261,6 @@ namespace DapperExtensions.Oracle
         {
             var builder = BuilderFactory.GetBuilder(conn);
             return await conn.QueryAsync(builder.GetByPageIndexSql<T>(pageIndex, pageSize, where, returnFields, orderBy), param, tran, commandTimeout);
-        }
-
-        public static async Task<PageEntity<T>> GetPageAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            return await Task.Run(() =>
-            {
-                return GetPage<T>(conn, pageIndex, pageSize, where, param, returnFields, orderBy, tran, commandTimeout);
-            });
-        }
-
-        public static async Task<PageEntity<dynamic>> GetPageDynamicAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            return await Task.Run(() =>
-            {
-                return GetPageDynamic<T>(conn, pageIndex, pageSize, where, param, returnFields, orderBy, tran, commandTimeout);
-            });
         }
 
         public static async Task<PageEntity<T>> GetPageForOracleAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)

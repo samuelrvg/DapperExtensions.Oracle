@@ -177,7 +177,7 @@ namespace Test
                 int[] ids = new int[] { 15, 18, 19, 28 };
 
                 //student
-                string[] ids2 = new string[] 
+                string[] ids2 = new string[]
                 {
                     "5c2c5e54922fdc2cc86bb7b6",
                     "5c2c5e4f922fdc1af8cdfae9"
@@ -435,35 +435,5 @@ namespace Test
                 Assert.Pass(json);
             }
         }
-
-        [Test]
-        public void GetPage()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PageEntity<PeopleTable> data = conn.GetPage<PeopleTable>(1, 2);
-                //PageEntity<PeopleTable> data = conn.GetPage<PeopleTable>(1, 10, "WHERE Id<@Id", new { Id = 5 }); //where
-                //PageEntity<PeopleTable> data = conn.GetPage<PeopleTable>(1, 2, returnFields: "Name"); //only return field [name]
-                //PageEntity<PeopleTable> data = conn.GetPage<PeopleTable>(1, 10, orderBy: "ORDER BY Id DESC"); //order by
-                string json = JsonConvert.SerializeObject(data);
-                Assert.Pass(json);
-            }
-        }
-
-        [Test]
-        public void GetPageDynamic()
-        {
-            using (var conn = DbHelper.GetConn())
-            {
-                PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 2);
-                //PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 10, "WHERE Id<@Id", new { Id = 5 }); //where
-                //PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 2, returnFields: "Name"); //only return field [name]
-                //PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 10, orderBy: "ORDER BY Id DESC"); //order by
-                string json = JsonConvert.SerializeObject(data);
-                Assert.Pass(json);
-            }
-        }
-
     }
-
 }
