@@ -3,7 +3,7 @@
 namespace DapperExtensions.Oracle
 {
     /// <summary>
-    /// 忽略列(非数据库字段)
+    /// Ignore column map
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class IgoreAttribute : Attribute

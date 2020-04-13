@@ -3,7 +3,7 @@
 namespace DapperExtensions.Oracle
 {
     /// <summary>
-    /// TableName：表名称，KeyName：主键名称，IsIdentity：是否自增
+    /// TableName：Table name，KeyName：Key，IsIdentity：Identiy
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class TableAttribute : Attribute
