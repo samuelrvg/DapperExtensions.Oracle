@@ -151,6 +151,11 @@ namespace DapperExtensions.Oracle
             var builder = BuilderFactory.GetBuilder(conn);
             return conn.ExecuteScalar<long>(builder.GetTotalSql<T>(where), param, tran, commandTimeout);
         }
+        public static long GetTotalQuery<T>(this IDbConnection conn, string query, IDbTransaction tran = null, int? commandTimeout = null)
+        {
+            var builder = BuilderFactory.GetBuilder(conn);
+            return conn.ExecuteScalar<long>(builder.GetTotalQuerySql<T>(query), null, tran, commandTimeout);
+        }
 
         public static IEnumerable<T> GetAll<T>(this IDbConnection conn, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
@@ -264,9 +269,14 @@ namespace DapperExtensions.Oracle
             return conn.Query(builder.GetByPageIndexSql<T>(pageIndex, pageSize, where, returnFields, orderBy), param, tran, true, commandTimeout);
         }
 
-        public static PageEntity<T> GetPageForOracle<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
+        public static IEnumerable<T> GetByPageIndex<T>(this IDbConnection conn, string query, int pageIndex, int pageSize, IDbTransaction tran = null, int? commandTimeout = null)
         {
             var builder = BuilderFactory.GetBuilder(conn);
+            return conn.Query<T>(builder.GetByPageIndexSql<T>(query, pageIndex, pageSize), null, tran, true, commandTimeout);
+        }
+
+        public static PageEntity<T> GetPageForOracle<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
+        {
             PageEntity<T> pageEntity = new PageEntity<T>();
             pageEntity.Total = GetTotal<T>(conn, where, param, tran, commandTimeout);
             if (pageEntity.Total > 0)
@@ -275,10 +285,19 @@ namespace DapperExtensions.Oracle
                 pageEntity.Data = Enumerable.Empty<T>();
             return pageEntity;
         }
+        public static dynamic GetPageForOracle<T>(this IDbConnection conn, string query, int pageIndex, int pageSize, IDbTransaction tran = null, int? commandTimeout = null)
+        {
+            PageEntity<T> pageEntity = new PageEntity<T>();
+            pageEntity.Total = GetTotalQuery<T>(conn, query, tran, commandTimeout);
+            if (pageEntity.Total > 0)
+                pageEntity.Data = GetByPageIndex<T>(conn, query, pageIndex, pageSize, tran, commandTimeout);
+            else
+                pageEntity.Data = Enumerable.Empty<T>();
+            return pageEntity;
+        }
 
         public static PageEntity<dynamic> GetPageForOracleDynamic<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
-            var builder = BuilderFactory.GetBuilder(conn);
             PageEntity<dynamic> pageEntity = new PageEntity<dynamic>();
             pageEntity.Total = GetTotal<T>(conn, where, param, tran, commandTimeout);
             if (pageEntity.Total > 0)

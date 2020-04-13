@@ -39,6 +39,8 @@ namespace DapperExtensions.Oracle
 
         string GetTotalSql<T>(string where);
 
+        string GetTotalQuerySql<T>(string query);
+
         string GetAllSql<T>(string returnFields, string orderBy);
 
         string GetByIdSql<T>(string returnFields);
@@ -54,6 +56,8 @@ namespace DapperExtensions.Oracle
         string GetBySkipTakeSql<T>(int skip, int take, string where, string returnFields, string orderBy);
 
         string GetByPageIndexSql<T>(int pageIndex, int pageSize, string where, string returnFields, string orderBy);
+
+        string GetByPageIndexSql<T>(string query, int pageIndex, int pageSize);
 
         #endregion
 

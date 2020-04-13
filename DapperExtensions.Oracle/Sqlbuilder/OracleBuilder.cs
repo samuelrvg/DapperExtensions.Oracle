@@ -119,6 +119,10 @@ namespace DapperExtensions.Oracle
             var table = OracleCache.GetTableEntity<T>();
             return string.Format("SELECT COUNT(1) FROM {0} {1}", table.TableName, where);
         }
+        public string GetTotalQuerySql<T>(string query)
+        {
+            return string.Format("SELECT COUNT(1) FROM ({0})", query);
+        }
 
         public string GetAllSql<T>(string returnFields, string orderBy)
         {
@@ -193,6 +197,16 @@ namespace DapperExtensions.Oracle
                 skip = (pageIndex - 1) * pageSize;
             }
             return GetBySkipTakeSql<T>(skip, pageSize, where, returnFields, orderBy);
+        }
+        public string GetByPageIndexSql<T>(string query, int pageIndex, int pageSize)
+        {
+            StringBuilder sb = new StringBuilder();
+            int skip = 0;
+            if (pageIndex > 0)
+            {
+                skip = (pageIndex - 1) * pageSize;
+            }
+            return sb.AppendFormat("SELECT * FROM(SELECT A.*,ROWNUM RN FROM ({0}) A  WHERE ROWNUM <= {1}) WHERE RN > {2}", query, skip + pageSize, skip).ToString();
         }
     }
 }

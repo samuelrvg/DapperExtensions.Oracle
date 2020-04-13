@@ -256,6 +256,13 @@ namespace DapperExtensions.Oracle
                 return GetPageForOracle<T>(conn, pageIndex, pageSize, where, param, returnFields, orderBy, tran, commandTimeout);
             });
         }
+        public static async Task<PageEntity<T>> GetPageForOracleAsync<T>(this IDbConnection conn, string query, int pageIndex, int pageSize, IDbTransaction tran = null, int? commandTimeout = null)
+        {
+            return await Task.Run(() =>
+            {
+                return GetPageForOracle<T>(conn, query, pageIndex, pageSize, tran, commandTimeout);
+            });
+        }
 
         public static async Task<PageEntity<dynamic>> GetPageDynamicOracleAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string where = null, object param = null, string returnFields = null, string orderBy = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
