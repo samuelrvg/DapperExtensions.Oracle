@@ -31,8 +31,6 @@ namespace DapperExtensions.Oracle
 
         #region method (Query)
 
-        string GetIdentitySql();
-
         string GetSequenceCurrentSql(string sequence);
 
         string GetSequenceNextSql(string sequence);

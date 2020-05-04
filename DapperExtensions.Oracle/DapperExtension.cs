@@ -98,7 +98,7 @@ namespace DapperExtensions.Oracle
         public static int Delete<T>(this IDbConnection conn, object id, IDbTransaction tran = null, int? commandTimeout = null)
         {
             var builder = BuilderFactory.GetBuilder(conn);
-            return conn.Execute(builder.GetDeleteByIdSql<T>(), new { id = id }, tran, commandTimeout);
+            return conn.Execute(builder.GetDeleteByIdSql<T>(), new { id }, tran, commandTimeout);
         }
 
         public static int DeleteByIds<T>(this IDbConnection conn, object ids, IDbTransaction tran = null, int? commandTimeout = null)
@@ -127,12 +127,6 @@ namespace DapperExtensions.Oracle
         #endregion
 
         #region method (Query)
-
-        public static IdType GetIdentity<IdType>(this IDbConnection conn, IDbTransaction tran = null, int? commandTimeout = null)
-        {
-            var builder = BuilderFactory.GetBuilder(conn);
-            return conn.ExecuteScalar<IdType>(builder.GetIdentitySql(), null, tran, commandTimeout);
-        }
 
         public static IdType GetSequenceCurrent<IdType>(this IDbConnection conn, string sequence, IDbTransaction tran = null, int? commandTimeout = null)
         {

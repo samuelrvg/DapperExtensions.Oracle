@@ -99,11 +99,6 @@ namespace DapperExtensions.Oracle
             return OracleCache.GetTableEntity<T>().DeleteAllSql;
         }
 
-        public string GetIdentitySql()
-        {
-            throw new Exception("for oracle please use [GetSequenceNext] or [GetSequenceCurrent] or use [InsertReturnId]");
-        }
-
         public string GetSequenceCurrentSql(string sequence)
         {
             return string.Format("SELECT {0}.CURRVAL FROM DUAL", sequence);
