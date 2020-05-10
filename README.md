@@ -5,7 +5,7 @@ https://github.com/StackExchange/Dapper <br>
 Project Base DapperExtensions <br>
 https://github.com/znyet/DapperExtensions <br>
 
-Nuget
+Nuget <br>
 https://www.nuget.org/packages/DapperExtensions.Oracle/1.0.0 <br>
 
 10-05-2020
