@@ -5,6 +5,17 @@ https://github.com/StackExchange/Dapper <br>
 Project Base DapperExtensions <br>
 https://github.com/znyet/DapperExtensions <br>
 
+Nuget
+https://www.nuget.org/packages/DapperExtensions.Oracle/1.0.0 <br>
+
+10-05-2020
+Updates:
+
+* Add attribute Sequence.
+* New format string at queries.
+* Upper case default.
+* Focus in Oracle
+
 open source and zero config (simple CURD)
 ##### 1、IDbConnection
 ```c#
@@ -24,7 +35,7 @@ public class PeopleTable
 
     public int Id { get; set; }
 
-    [Column(Name = "name")]
+    [Column(Name = "name")] // Default is UpperCase
     public string Name { get; set; }
 
     public int Sex { get; set; }
