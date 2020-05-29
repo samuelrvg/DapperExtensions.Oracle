@@ -3,7 +3,7 @@
 namespace DapperExtensions.Oracle
 {
     /// <summary>
-    /// TableName：Table name，KeyName：Key，IsIdentity：Identiy
+    /// TableName：Table name，KeyName：Key，IsIdentity：Identiy, SequenceName : Sequence
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class TableAttribute : Attribute

@@ -8,14 +8,6 @@ namespace DapperExtensions.Oracle
 {
     internal class CommonUtil
     {
-        /// <summary>
-        /// 关键字处理[name] `name`
-        /// 获取id,sex,name
-        /// </summary>
-        /// <param name="fieldList"></param>
-        /// <param name="leftChar">左符号</param>
-        /// <param name="rightChar">右符号</param>
-        /// <returns></returns>
         public static string GetFieldsStr(IEnumerable<string> fieldList, string leftChar, string rightChar)
         {
             StringBuilder sb = new StringBuilder();
@@ -32,12 +24,7 @@ namespace DapperExtensions.Oracle
             return sb.ToString();
         }
 
-        /// <summary>
-        /// //获取@id,@sex,@name
-        /// </summary>
-        /// <param name="fieldList"></param>
-        /// <returns></returns>
-        public static string GetFieldsAtStr(IEnumerable<string> fieldList, string symbol = "@") //oracle @换成 
+        public static string GetFieldsAtStr(IEnumerable<string> fieldList, string symbol = "@")
         {
             StringBuilder sb = new StringBuilder();
             foreach (var item in fieldList)
@@ -52,15 +39,7 @@ namespace DapperExtensions.Oracle
             return sb.ToString();
         }
 
-        /// <summary>
-        /// 关键字处理[name] `name`
-        /// 获取id=@id,name=@name
-        /// </summary>
-        /// <param name="fieldList"></param>
-        /// <param name="leftChar">左符号</param>
-        /// <param name="rightChar">右符号</param>
-        /// <returns></returns>
-        public static string GetFieldsEqStr(IEnumerable<string> fieldList, string leftChar, string rightChar, string symbol = "@") //oracle @换成 
+        public static string GetFieldsEqStr(IEnumerable<string> fieldList, string leftChar, string rightChar, string symbol = "@")
         {
             StringBuilder sb = new StringBuilder();
             foreach (var item in fieldList)
@@ -80,11 +59,6 @@ namespace DapperExtensions.Oracle
             return (param is IEnumerable && !(param is string || param is IEnumerable<KeyValuePair<string, object>>)) ? (IEnumerable)param : null;
         }
 
-        /// <summary>
-        /// 判断输入参数是否有个数，用于in判断
-        /// </summary>
-        /// <param name="param"></param>
-        /// <returns></returns>
         public static bool ObjectIsEmpty(object param)
         {
             bool result = true;

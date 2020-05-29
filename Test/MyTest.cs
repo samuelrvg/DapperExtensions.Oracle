@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace Test
 {
     [TestFixture]
-    public class MyTest  //DapperExtensions test
+    public class MyTest
     {
         int Second = DateTime.Now.Second;
 

@@ -41,16 +41,6 @@ namespace DapperExtensions.Oracle
             return conn.Execute(builder.GetInsertSql<T>(), model, tran, commandTimeout);
         }
 
-        /// <summary>
-        /// only oracle use
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="conn"></param>
-        /// <param name="model"></param>
-        /// <param name="sequence"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <returns></returns>
         public static decimal InsertReturnIdForOracle<T>(this IDbConnection conn, T model, string sequence = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             var builder = BuilderFactory.GetBuilder(conn);

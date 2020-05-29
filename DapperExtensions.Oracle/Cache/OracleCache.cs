@@ -5,9 +5,6 @@ namespace DapperExtensions.Oracle
 {
     internal class OracleCache
     {
-        /// <summary>
-        /// Cache
-        /// </summary>
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, TableEntity> tableDict = new ConcurrentDictionary<RuntimeTypeHandle, TableEntity>();
         private static readonly object _locker = new object();
         public static TableEntity GetTableEntity<T>()
