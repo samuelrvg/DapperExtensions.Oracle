@@ -49,7 +49,7 @@ public class PeopleTable
 ```c#
 using DapperExtensions.Oracle;
 
-using (var conn = GetConn()) //IDbConnection (sqlserver、mysql、oracle、postgresql、sqlite)
+using (var conn = GetConn()) //IDbConnection
 {
       PeopleTable people = new PeopleTable();
       people.Name = "Jone";
