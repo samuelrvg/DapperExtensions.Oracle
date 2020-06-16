@@ -43,7 +43,7 @@ namespace DapperExtensions.Oracle
             return await conn.ExecuteScalarAsync<dynamic>(builder.GetInsertReturnIdSql<T>(), model, tran, commandTimeout);
         }
 
-        public async static Task<decimal> InsertReturnIdForOracleAsync<T>(this IDbConnection conn, T model, string sequence = null, IDbTransaction tran = null, int? commandTimeout = null)
+        public async static Task<decimal> InsertReturnIdAsync<T>(this IDbConnection conn, T model, string sequence = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             return await Task.Run(() =>
             {

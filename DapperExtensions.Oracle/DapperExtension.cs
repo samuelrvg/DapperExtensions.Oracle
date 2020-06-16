@@ -41,7 +41,7 @@ namespace DapperExtensions.Oracle
             return conn.Execute(builder.GetInsertSql<T>(), model, tran, commandTimeout);
         }
 
-        public static decimal InsertReturnIdForOracle<T>(this IDbConnection conn, T model, string sequence = null, IDbTransaction tran = null, int? commandTimeout = null)
+        public static decimal InsertReturnId<T>(this IDbConnection conn, T model, string sequence = null, IDbTransaction tran = null, int? commandTimeout = null)
         {
             var builder = BuilderFactory.GetBuilder(conn);
             TableAttribute tableEntity = model.GetType().GetCustomAttributes(false).FirstOrDefault(f => f is TableAttribute) as TableAttribute;

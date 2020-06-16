@@ -65,7 +65,7 @@ using (var conn = GetConn()) //IDbConnection
       people.Id = conn.GetSequenceNext<int>("seq_my"); //get the sequence
       int effect = conn.Insert(people);
 
-      var id = conn.InsertReturnIdForOracle(people,"seq_my");//insert and return id
+      var id = conn.InsertReturnId(people,"seq_my");//insert and return id
       
       var seq = conn.GetSequenceNext<decimal>("seq_my"); //oracle seq
       var seq = conn.GetSequenceCurrent<decimal>("seq_my");
@@ -200,10 +200,10 @@ using (var conn = GetConn()) //IDbConnection
       PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTable>(1, 10, orderBy: "ORDER BY Id DESC"); //order by
       
       //for oracle GetPageForOracle
-      PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 2);
-      PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 10, "WHERE \"Id\"<:Id", new { Id = 5 }); //where
-      PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 2, returnFields: "\"Name\""); //only return field [name]
-      PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 10, orderBy: "ORDER BY \"Id\" DESC"); //order by
+      PageEntity<PeopleTableOracle> data = conn.GetPage<PeopleTableOracle>(1, 2);
+      PageEntity<PeopleTableOracle> data = conn.GetPage<PeopleTableOracle>(1, 10, "WHERE \"Id\"<:Id", new { Id = 5 }); //where
+      PageEntity<PeopleTableOracle> data = conn.GetPage<PeopleTableOracle>(1, 2, returnFields: "\"Name\""); //only return field [name]
+      PageEntity<PeopleTableOracle> data = conn.GetPage<PeopleTableOracle>(1, 10, orderBy: "ORDER BY \"Id\" DESC"); //order by
     
       //GetDataTable
       string sql = "SELECT * FROM People";
