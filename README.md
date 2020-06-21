@@ -8,11 +8,11 @@ https://github.com/znyet/DapperExtensions <br>
 Nuget <br>
 https://www.nuget.org/packages/DapperExtensions.Oracle/1.0.0 <br>
 
-*.Net Core 2.1+*
+**.Net Core 2.1+**
 
 [Dapper.Extensions.Oracle.Core](https://www.nuget.org/packages/DapperExtensions.Oracle.Core/)
 
-*.Net Framework 4.6.1+*
+**.Net Framework 4.6.1+**
 
 [Dapper.Extensions.Oracle](https://www.nuget.org/packages/DapperExtensions.Oracle/)
 
