@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DapperExtensions.Oracle\DapperExtensions.Oracle.csproj">
-      <Project>{47f63cfd-5637-4a4a-ab72-b325db6350c4}</Project>
+      <Project>{6f575d61-f309-4987-b00e-7cdbcf195296}</Project>
       <Name>DapperExtensions.Oracle</Name>
     </ProjectReference>
   </ItemGroup>
