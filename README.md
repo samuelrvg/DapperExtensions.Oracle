@@ -1,12 +1,12 @@
 # DapperExtensions.Oracle
-Dapper <br>
+
+**Dapper** <br>
 https://github.com/StackExchange/Dapper <br>
 
-Project Base DapperExtensions <br>
+**Project Base DapperExtensions** <br>
 https://github.com/znyet/DapperExtensions <br>
 
-Nuget <br>
-https://www.nuget.org/packages/DapperExtensions.Oracle/1.0.0 <br>
+#### **Nuget** <br>
 
 **.Net Core 2.1+**
 
@@ -56,6 +56,8 @@ public class PeopleTable
 ##### 2、Ready to fly (all the method has Async extensions)
 ```c#
 using DapperExtensions.Oracle;
+//or
+//using DapperExtensions.Oracle.Core;
 
 using (var conn = GetConn()) //IDbConnection
 {
