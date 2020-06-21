@@ -64,7 +64,7 @@ namespace Test
                 PeopleTableOracle people = new PeopleTableOracle();
                 people.Name = "李四" + Second;
                 people.Sex = Second;
-                var id = conn.InsertReturnIdForOracle(people,"seq_my");
+                var id = conn.InsertReturnId(people,"seq_my");
                 Assert.Pass(id.ToString());
             }
 
@@ -420,7 +420,7 @@ namespace Test
         {
             using (var conn = DbHelper.GetConn())
             {
-                PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 2);
+                PageEntity<PeopleTableOracle> data = conn.GetPage<PeopleTableOracle>(1, 2);
                 //PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 10, "WHERE \"Id\"<:Id", new { Id = 5 }); //where
                 //PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 2, returnFields: "\"Name\""); //only return field [name]
                 //PageEntity<PeopleTableOracle> data = conn.GetPageForOracle<PeopleTableOracle>(1, 10, orderBy: "ORDER BY \"Id\" DESC"); //order by
@@ -434,7 +434,7 @@ namespace Test
         {
             using (var conn = DbHelper.GetConn())
             {
-                PageEntity<dynamic> data = conn.GetPageForOracleDynamic<PeopleTableOracle>(1, 2);
+                PageEntity<dynamic> data = conn.GetPageDynamic<PeopleTableOracle>(1, 2);
                 //PageEntity<dynamic> data = conn.GetPageDynamicOracle<PeopleTableOracle>(1, 10, "WHERE \"Id\"<:Id", new { Id = 5 }); //where
                 //PageEntity<dynamic> data = conn.GetPageDynamicOracle<PeopleTableOracle>(1, 2, returnFields: "\"Name\""); //only return field [name]
                 //PageEntity<dynamic> data = conn.GetPageDynamicOracle<PeopleTableOracle>(1, 10, orderBy: "ORDER BY \"Id\" DESC"); //order by
