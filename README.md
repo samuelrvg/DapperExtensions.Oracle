@@ -10,8 +10,12 @@ https://github.com/znyet/DapperExtensions <br>
 
 [DapperExtensions.Oracle](https://www.nuget.org/packages/DapperExtensions.Oracle/)
 
-10-05-2020
-Updates:
+Release 1.0.4 20/06/2020
+
+* Portable .net standard 2.0
+* Update Readme
+
+10/05/2020
 
 * Add attribute Sequence.
 * New format string at queries.
