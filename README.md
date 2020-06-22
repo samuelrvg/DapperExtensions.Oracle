@@ -50,8 +50,6 @@ public class PeopleTable
 ##### 2、Ready to fly (all the method has Async extensions)
 ```c#
 using DapperExtensions.Oracle;
-//or
-//using DapperExtensions.Oracle.Core;
 
 using (var conn = GetConn()) //IDbConnection
 {
@@ -71,7 +69,7 @@ using (var conn = GetConn()) //IDbConnection
 
       var id = conn.InsertReturnId(people,"seq_my");//insert and return id
       
-      var seq = conn.GetSequenceNext<decimal>("seq_my"); //oracle seq
+      var seq = conn.GetSequenceNext<decimal>("seq_my");
       var seq = conn.GetSequenceCurrent<decimal>("seq_my");
       
       //Update
