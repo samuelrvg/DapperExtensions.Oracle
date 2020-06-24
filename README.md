@@ -10,12 +10,15 @@ https://github.com/znyet/DapperExtensions <br>
 
 [DapperExtensions.Oracle](https://www.nuget.org/packages/DapperExtensions.Oracle/)
 
+Release 1.0.6.1
+* Fix query insert.
+
 Release 1.0.4 20/06/2020
 
 * Portable .net standard 2.0
 * Update Readme
 
-10/05/2020
+Release 1.0.1 10/05/2020
 
 * Add attribute Sequence.
 * New format string at queries.
