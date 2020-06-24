@@ -44,7 +44,7 @@ namespace DapperExtensions.Oracle
             StringBuilder sb = new StringBuilder();
             foreach (var item in fieldList)
             {
-                sb.AppendFormat("{1}={3}{1}", item, symbol);
+                sb.AppendFormat("{0}={1}{0}", item, symbol);
 
                 if (item != fieldList.Last())
                 {
