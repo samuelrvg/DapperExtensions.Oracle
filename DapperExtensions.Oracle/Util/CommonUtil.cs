@@ -8,12 +8,12 @@ namespace DapperExtensions.Oracle
 {
     internal class CommonUtil
     {
-        public static string GetFieldsStr(IEnumerable<string> fieldList, string leftChar, string rightChar)
+        public static string GetFieldsStr(IEnumerable<string> fieldList)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var item in fieldList)
             {
-                sb.AppendFormat("{0}{1}{2}", leftChar, item, rightChar);
+                sb.AppendFormat("{0}", item);
 
                 if (item != fieldList.Last())
                 {
@@ -39,12 +39,12 @@ namespace DapperExtensions.Oracle
             return sb.ToString();
         }
 
-        public static string GetFieldsEqStr(IEnumerable<string> fieldList, string leftChar, string rightChar, string symbol = "@")
+        public static string GetFieldsEqStr(IEnumerable<string> fieldList, string symbol = "@")
         {
             StringBuilder sb = new StringBuilder();
             foreach (var item in fieldList)
             {
-                sb.AppendFormat("{0}{1}{2}={3}{1}", leftChar, item, rightChar, symbol);
+                sb.AppendFormat("{1}={3}{1}", item, symbol);
 
                 if (item != fieldList.Last())
                 {
@@ -125,13 +125,13 @@ namespace DapperExtensions.Oracle
 
         public static void InitTableForOracle(TableEntity table)
         {
-            string Fields = GetFieldsStr(table.AllFieldList, "\"", "\"");
+            string Fields = GetFieldsStr(table.AllFieldList);
             string FieldsAt = GetFieldsAtStr(table.AllFieldList, ":");
-            string FieldsEq = GetFieldsEqStr(table.AllFieldList, "\"", "\"", ":");
+            string FieldsEq = GetFieldsEqStr(table.AllFieldList, ":");
 
-            string FieldsExtKey = GetFieldsStr(table.ExceptKeyFieldList, "\"", "\"");
+            string FieldsExtKey = GetFieldsStr(table.ExceptKeyFieldList);
             string FieldsAtExtKey = GetFieldsAtStr(table.ExceptKeyFieldList, ":");
-            string FieldsEqExtKey = GetFieldsEqStr(table.ExceptKeyFieldList, "\"", "\"", ":");
+            string FieldsEqExtKey = GetFieldsEqStr(table.ExceptKeyFieldList, ":");
 
             table.AllFields = Fields;
             table.AllFieldsAt = FieldsAt;
@@ -141,14 +141,15 @@ namespace DapperExtensions.Oracle
             table.AllFieldsAtExceptKey = FieldsAtExtKey;
             table.AllFieldsAtEqExceptKey = FieldsEqExtKey;
 
-            if (!table.IsIdentity && string.IsNullOrEmpty(table.SequenceName))
-                throw new Exception("sequence name not defined");
-
-            table.InsertSql = string.Format("INSERT INTO {0}({1}.NEXTVAL,{2})VALUES({3})", table.TableName, table.SequenceName, Fields, FieldsAt);
+            //table.InsertSql = string.Format("INSERT INTO {0}({1})VALUES({2})", table.TableName, Fields, FieldsAt);
 
             if (!string.IsNullOrEmpty(table.KeyName))
             {
                 table.InsertReturnIdSql = string.Format("INSERT INTO {0}({1})VALUES(```seq```.NEXTVAL,{2})", table.TableName, Fields, FieldsAtExtKey);
+                if (!string.IsNullOrEmpty(table.SequenceName))
+                {
+                    table.InsertSql = string.Format("INSERT INTO {0}({1})VALUES({2}.NEXTVAL, {3})", table.TableName, Fields, table.SequenceName, FieldsAtExtKey);
+                }
                 if (table.IsIdentity)
                 {
                     table.InsertSql = string.Format("INSERT INTO {0}({1})VALUES({2})", table.TableName, FieldsExtKey, FieldsAtExtKey);
@@ -175,17 +176,17 @@ namespace DapperExtensions.Oracle
 
         }
 
-        public static string CreateUpdateSql(TableEntity table, string updateFields, string leftChar, string rightChar, string symbol = "@")
+        public static string CreateUpdateSql(TableEntity table, string updateFields, string symbol = "@")
         {
-            string updateList = GetFieldsEqStr(updateFields.Split(',').ToList(), leftChar, rightChar, symbol);
-            return string.Format("UPDATE {0}{1}{2} SET {3} WHERE {0}{4}{2}={5}{4}", leftChar, table.TableName, rightChar, updateList, table.KeyName, symbol);
+            string updateList = GetFieldsEqStr(updateFields.Split(',').ToList(), symbol);
+            return string.Format("UPDATE {0} SET {1} WHERE {2}={3}{2}", table.TableName, updateList, table.KeyName, symbol);
         }
 
-        public static string CreateUpdateByWhereSql(TableEntity table, string where, string updateFields, string leftChar, string rightChar, string symbol = "@")
+        public static string CreateUpdateByWhereSql(TableEntity table, string where, string updateFields, string symbol = "@")
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("UPDATE {0}{1}{2} SET ", leftChar, table.TableName, rightChar);
+            sb.AppendFormat("UPDATE {0} SET ", table.TableName);
             if (string.IsNullOrEmpty(updateFields))
             {
                 if (!string.IsNullOrEmpty(table.KeyName))
@@ -195,7 +196,7 @@ namespace DapperExtensions.Oracle
             }
             else
             {
-                string updateList = GetFieldsEqStr(updateFields.Split(',').ToList(), leftChar, rightChar, symbol);
+                string updateList = GetFieldsEqStr(updateFields.Split(',').ToList(), symbol);
                 sb.Append(updateList);
             }
             sb.Append(" ");

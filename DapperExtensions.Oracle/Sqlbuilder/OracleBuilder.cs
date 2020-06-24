@@ -59,13 +59,13 @@ namespace DapperExtensions.Oracle
             {
                 return table.UpdateSql;
             }
-            return CommonUtil.CreateUpdateSql(table, updateFields, "\"", "\"",":");
+            return CommonUtil.CreateUpdateSql(table, updateFields, ":");
         }
 
         public string GetUpdateByWhereSql<T>(string where, string updateFields)
         {
             var table = OracleCache.GetTableEntity<T>();
-            return CommonUtil.CreateUpdateByWhereSql(table, where, updateFields, "\"", "\"",":");
+            return CommonUtil.CreateUpdateByWhereSql(table, where, updateFields, ":");
         }
 
         public string GetExistsKeySql<T>()
